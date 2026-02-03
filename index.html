@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Transaction Analyzer</title>
+    <meta name="description" content="Analyze credit card transactions by merchant. Upload XLSX files to visualize expenses, track spending patterns, and identify top merchants. All data processed locally - secure and private.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://omriavrahami.com/static/images/icon.png">
+
+    <!-- Open Graph / Facebook / WhatsApp / Slack -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://omriavrahami.com/">
+    <meta property="og:title" content="Credit Card Transaction Analyzer">
+    <meta property="og:description" content="Analyze credit card transactions by merchant. Upload XLSX files to visualize expenses, track spending patterns, and identify top merchants. All data processed locally - secure and private.">
+    <meta property="og:image" content="https://omriavrahami.com/static/images/icon.png">
+    <meta property="og:image:width" content="144">
+    <meta property="og:image:height" content="144">
+    <meta property="og:site_name" content="Credit Card Transaction Analyzer">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Credit Card Transaction Analyzer">
+    <meta name="twitter:description" content="Analyze credit card transactions by merchant. Upload XLSX files to visualize expenses and track spending patterns. All data processed locally.">
+    <meta name="twitter:image" content="https://omriavrahami.com/static/images/icon.png">
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Credit Card Transaction Analyzer</h1>
+            <p class="subtitle">Upload XLSX files to analyze expenses by merchant</p>
+        </header>
+
+        <main>
+            <!-- File Upload Section -->
+            <section class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📁</div>
+                    <p class="upload-text">Drag files here or click to select</p>
+                    <p class="upload-hint">XLSX files only</p>
+                    <input type="file" id="fileInput" accept=".xlsx" multiple hidden>
+                </div>
+                <div class="file-list" id="fileList"></div>
+                <button class="btn btn-secondary" id="clearBtn" style="display: none;">Clear All</button>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Processing files...</p>
+            </div>
+
+            <!-- Exchange Rate Info -->
+            <div class="exchange-info" id="exchangeInfo" style="display: none;"></div>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="total-expenses">
+                    <h2>Total Net Expenses</h2>
+                    <div class="total-amount" id="totalAmount">₪0.00</div>
+                    <button class="btn btn-restore" id="restoreBtn" style="display: none;">
+                        Show All Merchants
+                    </button>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="expensesChart"></canvas>
+                </div>
+
+                <div class="summary-info" id="summaryInfo"></div>
+            </section>
+
+            <!-- Error Display -->
+            <div class="error-message" id="errorMessage" style="display: none;"></div>
+        </main>
+
+        <footer>
+            <p>Credit Card Transaction Analyzer - All data is processed locally on your device and not sent to any server</p>
+        </footer>
+    </div>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- Merchant Trend Modal -->
+    <div class="modal-overlay" id="merchantModal" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 id="modalMerchantName"></h2>
+                <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-summary">
+                    <div class="modal-stat">
+                        <span class="modal-stat-label">Total Expenses:</span>
+                        <span class="modal-stat-value" id="modalTotalAmount"></span>
+                    </div>
+                    <div class="modal-stat">
+                        <span class="modal-stat-label">Number of Months:</span>
+                        <span class="modal-stat-value" id="modalMonthCount"></span>
+                    </div>
+                    <div class="modal-stat">
+                        <span class="modal-stat-label">Monthly Average:</span>
+                        <span class="modal-stat-value" id="modalAvgAmount"></span>
+                    </div>
+                </div>
+                <div class="modal-chart-container">
+                    <canvas id="merchantTrendChart"></canvas>
+                </div>
+                <div class="modal-warning" id="modalWarning" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Merchant Context Menu -->
+    <div class="context-menu" id="merchantContextMenu" style="display: none;">
+        <div class="context-menu-item" id="removeMerchantItem">
+            <span class="context-menu-icon">🗑️</span>
+            <span class="context-menu-text">Remove Merchant</span>
+        </div>
+    </div>
+
+    <!-- Application Scripts -->
+    <script src="js/format-utils.js"></script>
+    <script src="js/date-utils.js"></script>
+    <script src="js/xlsx-parser.js"></script>
+    <script src="js/chart-manager.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
